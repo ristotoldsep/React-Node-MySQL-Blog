@@ -7,12 +7,18 @@ import moment from "moment";
 
 const Write = () => {
   const state = useLocation().state;
-  const [value, setValue] = useState(state?.title || "");
-  const [title, setTitle] = useState(state?.desc || "");
+  console.log("lol", state);
+  const [value, setValue] = useState(state?.desc || "");
+  const [title, setTitle] = useState(state?.title || "");
   const [file, setFile] = useState(null);
   const [cat, setCat] = useState(state?.cat || "");
 
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const updateButton = location.pathname.split("?")[1];
+  console.log(updateButton);
+
 
   const upload = async () => {
     try {
@@ -35,13 +41,13 @@ const Write = () => {
             title,
             desc: value,
             cat,
-            img: file ? imgUrl : "",
+            img: file ? imgUrl : "placeholder.webp",
           })
         : await axios.post(`/posts/`, {
             title,
             desc: value,
             cat,
-            img: file ? imgUrl : "",
+            img: file ? imgUrl : "placeholder.webp",
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
       navigate("/");
@@ -56,6 +62,7 @@ const Write = () => {
         <input
           type="text"
           placeholder="Title"
+          value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <div className="editorContainer">
@@ -76,6 +83,7 @@ const Write = () => {
           <span>
             <b>Visibility: </b> Public
           </span>
+          {state ? state.img : null}
           <input
             style={{ display: "none" }}
             type="file"
@@ -88,7 +96,7 @@ const Write = () => {
           </label>
           <div className="buttons">
             <button>Save as a draft</button>
-            <button onClick={handleClick}>Publish</button>
+            <button onClick={handleClick}>{state ? "Update" : "Publish"}</button>
           </div>
         </div>
         <div className="item">
@@ -166,3 +174,4 @@ const Write = () => {
 };
 
 export default Write;
+  

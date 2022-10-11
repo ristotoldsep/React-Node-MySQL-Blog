@@ -40,10 +40,12 @@ const Single = () => {
     }
   };
 
-  const getText = (html) => {
+
+  //TO WAYS TO SHOW DANGEROUS HTML IN JSX, with dangerouslysethtml and with this function, other is in Home.jsx page
+/*   const getText = (html) => {
     const doc = new DOMParser().parseFromString(html, "text/html");
     return doc.body.textContent;
-  };
+  }; */
 
   return (
     <div className="single">
@@ -57,13 +59,14 @@ const Single = () => {
           </div>
           {currentUser.username === post.username && (
             <div className="edit">
-              <Link to={`/write?edit=2`} state={post}>
+              <Link to={`/write?edit=${post.id}`} state={post}>
                 <img src={Edit} alt="" />
               </Link>
               <img onClick={handleDelete} src={Delete} alt="" />
             </div>
           )}
         </div>
+        <p>Category: {post.cat}</p>
         <h1>{post.title}</h1>
         <p
           dangerouslySetInnerHTML={{
